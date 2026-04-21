@@ -16,14 +16,25 @@
         .ipa-text { color: #D30000; font-size: 1.4rem; font-weight: 400; margin-bottom: 20px; display: block; letter-spacing: 2px; }
         button { width: 100%; padding: 12px; border-radius: 6px; font-weight: 700; cursor: pointer; text-transform: uppercase; font-family: 'Montserrat', sans-serif; font-size: 0.8rem; margin: 5px 0; border: none; transition: 0.3s; }
         .btn-listen { background: #333; color: white; border: 1px solid #444; }
-        .btn-speak { background: #D30000; color: white; }
+        .btn-speak { background: #D30000; color: white; position: relative; }
         .btn-next { background: #00FF00; color: #000; margin-top: 10px; }
         .btn-skip { background: transparent; color: #666; border: 1px solid #333; font-size: 0.65rem; }
         #feedback { margin-top: 15px; min-height: 65px; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
         .success { color: #00FF00; }
         .error { color: #D30000; }
-        .feedback-tip { margin-top: 10px; color: #888; text-transform: none; font-size: 0.75rem; font-weight: 400; }
         .hidden { display: none; }
+        
+        /* Animación de pulso cuando está escuchando */
+        @keyframes pulse-red {
+            0% { box-shadow: 0 0 0px 0px rgba(211, 0, 0, 0.7); }
+            70% { box-shadow: 0 0 0px 15px rgba(211, 0, 0, 0); }
+            100% { box-shadow: 0 0 0px 0px rgba(211, 0, 0, 0); }
+        }
+        .listening-active {
+            animation: pulse-red 1.5s infinite;
+            background-color: #ff0000 !important;
+        }
+
         @keyframes pulse-green { 0% { box-shadow: 0 0 0px #00FF00; } 50% { box-shadow: 0 0 20px #00FF00; } 100% { box-shadow: 0 0 0px #00FF00; } }
         .correct-anim { animation: pulse-green 0.6s ease-in-out; border-color: #00FF00 !important; }
     </style>
@@ -31,7 +42,7 @@
 <body>
 <div class="action-card">
     <div class="section-header">
-        <span>Pronunciation Practice</span>
+        <span>Práctica de Pronunciación</span>
         <span id="counter" style="color: #888;">1 / 30</span>
     </div>
     <div class="progress-container"><div class="progress-bar" id="progress-bar"></div></div>
@@ -39,11 +50,11 @@
         <div class="exercise-block" id="block">
             <span class="target-text" id="txt">Get it.</span>
             <span class="ipa-text" id="ipa">/ɡerɪt/</span>
-            <button class="btn-listen" onclick="play()">1. Listen 🔊</button>
-            <button class="btn-speak" id="mic" onclick="start()">2. Speak 🎤</button>
-            <button id="next" class="btn-next hidden" onclick="go()">Continue ➔</button>
-            <button id="skip" class="btn-skip" onclick="go()">Skip ➔</button>
-            <div id="feedback">Focus on the flap [r]</div>
+            <button class="btn-listen" onclick="play()">1. Escuchar 🔊</button>
+            <button class="btn-speak" id="mic" onclick="start()">2. Hablar 🎤</button>
+            <button id="next" class="btn-next hidden" onclick="go()">Continuar ➔</button>
+            <button id="skip" class="btn-skip" onclick="go()">Saltar ➔</button>
+            <div id="feedback">Listo.</div>
         </div>
     </div>
 </div>
@@ -64,20 +75,42 @@
     const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     const rec = Recognition ? new Recognition() : null;
     if(rec) { rec.lang = 'en-US'; rec.continuous = false; }
+    
     function play() { window.speechSynthesis.cancel(); let u = new SpeechSynthesisUtterance(data[idx].t); u.lang = 'en-US'; u.rate = 0.7; window.speechSynthesis.speak(u); }
-    function start() { if (!rec) return alert("Mic not supported."); try { rec.start(); } catch(e) {} document.getElementById('mic').disabled = true; document.getElementById('feedback').innerText = "Listening..."; }
+    
+    function start() { 
+        if (!rec) return alert("Micrófono no compatible."); 
+        try { 
+            rec.start(); 
+        } catch(e) {} 
+        
+        const micBtn = document.getElementById('mic');
+        micBtn.classList.add('listening-active');
+        micBtn.innerText = "Escuchando... 🎙️";
+        document.getElementById('feedback').innerText = "Te escucho..."; 
+    }
+
     rec.onresult = (e) => {
         let heard = e.results[0][0].transcript.toLowerCase().replace(/[.,!?]/g,"").trim();
         let target = data[idx].t.toLowerCase().replace(/[.,!?]/g,"").trim();
         const fb = document.getElementById('feedback');
         if (heard.includes(target) || target.includes(heard)) {
-            fb.innerHTML = `<span class="success">Excellent!</span>`;
+            fb.innerHTML = `<span class="success">¡Excelente!</span>`;
             document.getElementById('block').classList.add('correct-anim');
             document.getElementById('next').classList.remove('hidden');
             document.getElementById('skip').classList.add('hidden');
-        } else { fb.innerHTML = `<span class="error">Heard: "${heard}"</span><span class="feedback-tip">Use the Flap [r] for a natural flow.</span>`; }
+        } else { 
+            fb.innerHTML = `<span class="error">Escuché: "${heard}"</span>`; 
+        }
     };
-    rec.onend = () => { document.getElementById('mic').disabled = false; setTimeout(() => document.getElementById('block').classList.remove('correct-anim'), 600); };
+
+    rec.onend = () => { 
+        const micBtn = document.getElementById('mic');
+        micBtn.classList.remove('listening-active');
+        micBtn.innerText = "2. Hablar 🎤";
+        setTimeout(() => document.getElementById('block').classList.remove('correct-anim'), 600); 
+    };
+
     function go() {
         idx++;
         if (idx < data.length) {
@@ -88,8 +121,10 @@
             document.getElementById('next').classList.add('hidden');
             document.getElementById('skip').classList.remove('hidden');
             document.getElementById('feedback').className = "";
-            document.getElementById('feedback').innerText = "Ready.";
-        } else { document.getElementById('quiz-area').innerHTML = `<div class="exercise-block" style="border-color:#00FF00"><h3 style="color:#00FF00">COMPLETE!</h3><p style="font-size:0.8rem; color:#888;">You've mastered all 30 phrases.</p><button class="btn-speak" onclick="location.reload()">RESTART</button></div>`; }
+            document.getElementById('feedback').innerText = "Listo.";
+        } else { 
+            document.getElementById('quiz-area').innerHTML = `<div class="exercise-block" style="border-color:#00FF00"><h3 style="color:#00FF00">¡COMPLETADO!</h3><p style="font-size:0.8rem; color:#888;">Has dominado las 30 frases.</p><button class="btn-speak" onclick="location.reload()">REINICIAR</button></div>`; 
+        }
     }
 </script>
 </body>
