@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pronunciation Practice</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
+        body { margin: 0; padding: 0; background-color: #000; font-family: 'Montserrat', sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; color: white; }
+        
+        .action-card { 
+            background: #000; border-left: 4px solid #D30000; border-radius: 8px; 
+            padding: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); 
+            width: 95%; max-width: 400px; box-sizing: border-box;
+        }
+
+        .section-header { 
+            color: #ffffff; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; 
+            border-bottom: 1.5px solid #D30000; padding-bottom: 4px; 
+            margin-bottom: 12px; display: flex; justify-content: space-between;
+        }
+
+        .progress-container { width: 100%; background: #222; height: 4px; border-radius: 2px; margin-bottom: 15px; overflow: hidden; }
+        .progress-bar { height: 100%; background: #D30000; width: 3.33%; transition: width 0.4s ease; }
+
+        .exercise-block { background: #111; padding: 20px; border-radius: 6px; border: 1px solid #222; text-align: center; }
+        
+        .target-text { color: #ffffff; font-size: 1.6rem; font-weight: 700; margin-bottom: 8px; display: block; line-height: 1.2; }
+        .ipa-text { color: #D30000; font-size: 1.4rem; font-weight: 400; margin-bottom: 20px; display: block; letter-spacing: 2px; }
+
+        button { 
+            width: 100%; padding: 12px; border-radius: 6px; font-weight: 700; 
+            cursor: pointer; text-transform: uppercase; font-family: 'Montserrat', sans-serif;
+            font-size: 0.8rem; margin: 5px 0; border: none; transition: 0.3s;
+        }
+
+        .btn-listen { background: #333; color: white; border: 1px solid #444; }
+        .btn-speak { background: #D30000; color: white; }
+        .btn-next { background: #00FF00; color: #000; margin-top: 10px; }
+        .btn-skip { background: transparent; color: #666; border: 1px solid #333; font-size: 0.65rem; }
+
+        #feedback { margin-top: 15px; min-height: 65px; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+        .success { color: #00FF00; }
+        .error { color: #D30000; }
+        .feedback-tip { margin-top: 10px; color: #888; text-transform: none; font-size: 0.75rem; font-weight: 400; }
+        .hidden { display: none; }
+
+        @keyframes pulse-green { 0% { box-shadow: 0 0 0px #00FF00; } 50% { box-shadow: 0 0 20px #00FF00; } 100% { box-shadow: 0 0 0px #00FF00; } }
+        .correct-anim { animation: pulse-green 0.6s ease-in-out; border-color: #00FF00 !important; }
+    </style>
+</head>
+<body>
+
+<div class="action-card">
+    <div class="section-header">
+        <span>Pronunciation Practice</span>
+        <span id="counter" style="color: #888;">1 / 30</span>
+    </div>
+
+    <div class="progress-container">
+        <div class="progress-bar" id="progress-bar"></div>
+    </div>
+
+    <div id="quiz-area">
+        <div class="exercise-block" id="block">
+            <span class="target-text" id="txt">Get it.</span>
+            <span class="ipa-text" id="ipa">/ɡerɪt/</span>
+            
+            <button class="btn-listen" onclick="play()">1. Listen 🔊</button>
+            <button class="btn-speak" id="mic" onclick="start()">2. Speak 🎤</button>
+            
+            <button id="next" class="btn-next hidden" onclick="go()">Continue ➔</button>
+            <button id="skip" class="btn-skip" onclick="go()">Skip ➔</button>
+
+            <div id="feedback">Focus on the flap [r]</div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // FIXED: All spaces removed from consonants in phonemes
+    const data = [
+        { t: "Get it.", p: "/ɡerɪt/" },
+        { t: "Shut it.", p: "/shʌrɪt/" },
+        { t: "Wait up.", p: "/weɪrʌp/" },
+        { t: "Let it.", p: "/lerɪt/" },
+        { t: "Cut it.", p: "/kʌrɪt/" },
+        { t: "At all.", p: "/ærɔl/" },
+        { t: "Out of.", p: "/aʊrəv/" },
+        { t: "Wait a minute.", p: "/weɪrəmɪnɪt/" },
+        { t: "About it.", p: "/əbaʊrɪt/" },
+        { t: "Part of.", p: "/parəv/" },
+        { t: "Light it up.", p: "/laɪrɪrʌp/" },
+        { t: "Late again.", p: "/leɪrəɡen/" },
+        { t: "Start it.", p: "/starɪt/" },
+        { t: "Write it.", p: "/raɪrɪt/" },
+        { t: "Forget it.", p: "/fərɡerɪt/" },
+        { t: "Reading it.", p: "/rirɪŋɪt/" },
+        { t: "Body part.", p: "/baripart/" },
+        { t: "Wait for it.", p: "/weɪrfɔrɪt/" },
+        { t: "Water bottle.", p: "/wɔrəbarəl/" },
+        { t: "Better later.", p: "/berəleɪrə/" },
+        { t: "What is it?", p: "/wʌrɪzɪt/" },
+        { t: "Get out of.", p: "/ɡeraʊrəv/" },
+        { t: "Put it away.", p: "/pʊrɪrəweɪ/" },
+        { t: "Not at all.", p: "/narərɔl/" },
+        { t: "Wait at all.", p: "/weɪrərɔl/" },
+        { t: "Write a letter.", p: "/raɪrəlerə/" },
+        { t: "A lot of it.", p: "/əlarəvɪt/" },
+        { t: "Bit of water.", p: "/bɪrəvwɔrə/" },
+        { t: "Eat a bit.", p: "/irəbɪt/" },
+        { t: "Shut it off.", p: "/shʌrɪrɔf/" }
+    ];
+
+    let idx = 0;
+    const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const rec = Recognition ? new Recognition() : null;
+    if(rec) { rec.lang = 'en-US'; rec.continuous = false; }
+
+    function play() {
+        window.speechSynthesis.cancel();
+        let u = new SpeechSynthesisUtterance(data[idx].t);
+        u.lang = 'en-US'; u.rate = 0.7;
+        window.speechSynthesis.speak(u);
+    }
+
+    function start() {
+        if (!rec) return alert("Mic not supported.");
+        try { rec.start(); } catch(e) {}
+        document.getElementById('mic').disabled = true;
+        document.getElementById('feedback').innerText = "Listening...";
+    }
+
+    rec.onresult = (e) => {
+        let heard = e.results[0][0].transcript.toLowerCase().replace(/[.,!?]/g,"").trim();
+        let target = data[idx].t.toLowerCase().replace(/[.,!?]/g,"").trim();
+        
+        const fb = document.getElementById('feedback');
+        if (heard.includes(target) || target.includes(heard)) {
+            fb.innerHTML = `<span class="success">Excellent!</span>`;
+            document.getElementById('block').classList.add('correct-anim');
+            document.getElementById('next').classList.remove('hidden');
+            document.getElementById('skip').classList.add('hidden');
+        } else {
+            fb.innerHTML = `<span class="error">Heard: "${heard}"</span><span class="feedback-tip">Use the Flap [r] for a natural flow.</span>`;
+        }
+    };
+
+    rec.onend = () => { 
+        document.getElementById('mic').disabled = false; 
+        setTimeout(() => document.getElementById('block').classList.remove('correct-anim'), 600); 
+    };
+
+    function go() {
+        idx++;
+        if (idx < data.length) {
+            document.getElementById('txt').innerText = data[idx].t;
+            document.getElementById('ipa').innerText = data[idx].p;
+            document.getElementById('counter').innerText = `${idx + 1} / ${data.length}`;
+            document.getElementById('progress-bar').style.width = `${((idx + 1) / data.length) * 100}%`;
+            document.getElementById('next').classList.add('hidden');
+            document.getElementById('skip').classList.remove('hidden');
+            document.getElementById('feedback').className = "";
+            document.getElementById('feedback').innerText = "Ready.";
+        } else {
+            document.getElementById('quiz-area').innerHTML = `<div class="exercise-block" style="border-color:#00FF00"><h3 style="color:#00FF00">COMPLETE!</h3><p style="font-size:0.8rem; color:#888;">You've mastered all 30 phrases.</p><button class="btn-speak" onclick="location.reload()">RESTART</button></div>`;
+        }
+    }
+</script>
+
+</body>
+</html>
