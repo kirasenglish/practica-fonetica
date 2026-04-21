@@ -24,7 +24,6 @@
         .error { color: #D30000; }
         .hidden { display: none; }
         
-        /* Animación de pulso cuando está escuchando */
         @keyframes pulse-red {
             0% { box-shadow: 0 0 0px 0px rgba(211, 0, 0, 0.7); }
             70% { box-shadow: 0 0 0px 15px rgba(211, 0, 0, 0); }
@@ -80,14 +79,12 @@
     
     function start() { 
         if (!rec) return alert("Micrófono no compatible."); 
-        try { 
-            rec.start(); 
-        } catch(e) {} 
+        try { rec.start(); } catch(e) {} 
         
         const micBtn = document.getElementById('mic');
         micBtn.classList.add('listening-active');
         micBtn.innerText = "Escuchando... 🎙️";
-        document.getElementById('feedback').innerText = "Te escucho..."; 
+        // Eliminado el mensaje de feedback redundante aquí
     }
 
     rec.onresult = (e) => {
