@@ -47,7 +47,7 @@
 <div class="action-card">
     <div class="section-header">
         <span>Vowel Sounds Mastery</span>
-        <span id="counter" style="color: #D30000;">1 / 24</span>
+        <span id="counter" style="color: #D30000;">1 / 48</span>
     </div>
     
     <div class="progress-container">
@@ -100,7 +100,35 @@
         { t: "Serve", p: "/sɜːrv/", s: "Servir" },
         { t: "Turn", p: "/tɜːrn/", s: "Girar / Turno" },
         { t: "Church", p: "/tʃɜːrtʃ/", s: "Iglesia" },
-        { t: "Early", p: "/ˈɜːr.li/", s: "Temprano" }
+        { t: "Early", p: "/ˈɜːr.li/", s: "Temprano" },
+
+        // /ɪ/ (American: Kit)
+        { t: "Sit", p: "/sɪt/", s: "Sentarse" },
+        { t: "In", p: "/ɪn/", s: "En" },
+        { t: "Fish", p: "/fɪʃ/", s: "Pez / Pescado" },
+        { t: "Big", p: "/bɪɡ/", s: "Grande" },
+        { t: "Milk", p: "/mɪlk/", s: "Leche" },
+        { t: "Ship", p: "/ʃɪp/", s: "Barco" },
+        { t: "Miss", p: "/mɪs/", s: "Extrañar / Perder" },
+        { t: "Drink", p: "/drɪŋk/", s: "Beber" },
+        { t: "List", p: "/lɪst/", s: "Lista" },
+        { t: "Wind", p: "/wɪnd/", s: "Viento" },
+        { t: "Fill", p: "/fɪl/", s: "Llenar" },
+        { t: "King", p: "/kɪŋ/", s: "Rey" },
+
+        // /æ/ (American: Trap)
+        { t: "Cat", p: "/kæt/", s: "Gato" },
+        { t: "Hat", p: "/hæt/", s: "Sombrero" },
+        { t: "Map", p: "/mæp/", s: "Mapa" },
+        { t: "Back", p: "/bæk/", s: "Atrás" },
+        { t: "Apple", p: "/ˈæp.əl/", s: "Manzana" },
+        { t: "Happy", p: "/ˈhæp.i/", s: "Feliz" },
+        { t: "Hand", p: "/hænd/", s: "Mano" },
+        { t: "Last", p: "/læst/", s: "Último" },
+        { t: "Fast", p: "/fæst/", s: "Rápido" },
+        { t: "Plan", p: "/plæn/", s: "Plan" },
+        { t: "Black", p: "/blæk/", s: "Negro" },
+        { t: "Stand", p: "/stænd/", s: "Estar de pie" }
     ];
 
     let idx = 0;
@@ -122,7 +150,7 @@
         if (!rec) return alert("Micro no compatible.");
         try { rec.start(); } catch(e) {}
         document.getElementById('mic').classList.add('listening-active');
-        document.getElementById('mic').innerText = "Escuchando... 🎤";
+        document.getElementById('mic').innerText = "2. Presiona y Habla 🎤";
     }
 
     rec.onresult = (e) => {
