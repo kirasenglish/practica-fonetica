@@ -150,7 +150,7 @@
         if (!rec) return alert("Micro no compatible.");
         try { rec.start(); } catch(e) {}
         document.getElementById('mic').classList.add('listening-active');
-        document.getElementById('mic').innerText = "2. Presiona y Habla 🎤";
+        document.getElementById('mic').innerText = "Escuchando... 🎤";
     }
 
     rec.onresult = (e) => {
