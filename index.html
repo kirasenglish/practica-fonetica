@@ -47,7 +47,7 @@
 <div class="action-card">
     <div class="section-header">
         <span>Vowel Sounds Mastery</span>
-        <span id="counter" style="color: #D30000;">1 / 47</span>
+        <span id="counter" style="color: #D30000;">1 / 46</span>
     </div>
     
     <div class="progress-container">
@@ -56,13 +56,13 @@
 
     <div id="quiz-area">
         <div class="exercise-block" id="block">
-            <span class="target-text" id="txt">Ago</span>
-            <span class="ipa-text" id="ipa">/əˈɡou/</span>
+            <span class="target-text" id="txt"></span>
+            <span class="ipa-text" id="ipa"></span>
             
-            <div id="translation" class="translation-text blur" onclick="toggleBlur()">Hace (tiempo)</div>
+            <div id="translation" class="translation-text blur" onclick="toggleBlur()"></div>
             
             <button class="btn-listen" onclick="play()">1. Escuchar Audio 🔊</button>
-            <button class="btn-speak" id="mic" onclick="start()">2. Presiona y Habla 🎤</button>
+            <button class="btn-speak" id="mic" onclick="start()">2. Presiona y Habla 3: 🎤</button>
             
             <div id="feedback">Listo para empezar.</div>
 
@@ -73,47 +73,46 @@
 </div>
 
 <script>
-    const data = [
+    let data = [
         // /ə/ (The Schwa)
         { t: "Ago", p: "/əˈɡou/", s: "Hace (tiempo)" },
         { t: "Soda", p: "/ˈsou.də/", s: "Refresco" },
         { t: "About", p: "/əˈbaut/", s: "Sobre / Acerca de" },
         { t: "Paper", p: "/ˈpei.pər/", s: "Papel" },
-        { t: "Upon", p: "/əˈpɑːn/", s: "Sobre / Encima de" },
-        { t: "Mother", p: "/ˈmʌd.ər/", s: "Madre" },
+        { t: "Upon", p: "/əˈpɑ:n/", s: "Sobre / Encima de" },
         { t: "Banana", p: "/bəˈnæn.ə/", s: "Plátano" },
-        { t: "Problem", p: "/ˈprɑː.bləm/", s: "Problema" },
+        { t: "Problem", p: "/ˈprɑ: .bləm/", s: "Problema" },
         { t: "Elephant", p: "/ˈel.ə.fənt/", s: "Elefante" },
         { t: "Animal", p: "/ˈæn.i.məl/", s: "Animal" },
-        { t: "Support", p: "/səˈpɔːrt/", s: "Apoyo / Soportar" },
+        { t: "Support", p: "/səˈpɔ:rt/", s: "Apoyo / Soportar" },
         { t: "Listen", p: "/ˈlis.ən/", s: "Escuchar" },
 
         // /ɜ:/ (American: Nurse)
-        { t: "Bird", p: "/bɜːrd/", s: "Pájaro" },
-        { t: "Work", p: "/wɜːrk/", s: "Trabajo / Trabajar" },
-        { t: "Girl", p: "/ɡɜːrl/", s: "Niña / Chica" },
-        { t: "Learn", p: "/lɜːrn/", s: "Aprender" },
-        { t: "Word", p: "/wɜːrd/", s: "Palabra" },
-        { t: "Person", p: "/ˈpɜːr.sən/", s: "Persona" },
-        { t: "First", p: "/fɜːrst/", s: "Primero" },
-        { t: "Serve", p: "/sɜːrv/", s: "Servir" },
-        { t: "Turn", p: "/tɜːrn/", s: "Girar / Turno" },
-        { t: "Church", p: "/chɜːrch/", s: "Iglesia" },
-        { t: "Early", p: "/ˈɜːr.li/", s: "Temprano" },
+        { t: "Bird", p: "/bɜ:rd/", s: "Pájaro" },
+        { t: "Work", p: "/wɜ:rk/", s: "Trabajo / Trabajar" },
+        { t: "Girl", p: "/ɡɜ:rl/", s: "Niña / Chica" },
+        { t: "Learn", p: "/lɜ:rn/", s: "Aprender" },
+        { t: "Word", p: "/wɜ:rd/", s: "Palabra" },
+        { t: "Person", p: "/ˈpɜ:r.sən/", s: "Persona" },
+        { t: "First", p: "/fɜ:rst/", s: "Primero" },
+        { t: "Serve", p: "/sɜ:rv/", s: "Servir" },
+        { t: "Turn", p: "/tɜ:rn/", s: "Girar / Turno" },
+        { t: "Church", p: "/chɜ:rch/", s: "Iglesia" },
+        { t: "Early", p: "/ˈɜ:r.li/", s: "Temprano" },
 
         // /ɪ/ (American: Kit)
-        { t: "Sit", p: "/sit/", s: "Sentarse" },
-        { t: "In", p: "/in/", s: "En" },
-        { t: "Fish", p: "/fish/", s: "Pez / Pescado" },
-        { t: "Big", p: "/biɡ/", s: "Grande" },
-        { t: "Milk", p: "/milk/", s: "Leche" },
-        { t: "Ship", p: "/ship/", s: "Barco" },
-        { t: "Miss", p: "/mis/", s: "Extrañar / Perder" },
-        { t: "Drink", p: "/drink/", s: "Beber" },
-        { t: "List", p: "/list/", s: "Lista" },
-        { t: "Wind", p: "/wind/", s: "Viento" },
-        { t: "Fill", p: "/fil/", s: "Llenar" },
-        { t: "King", p: "/kin/", s: "Rey" },
+        { t: "Sit", p: "/sɪt/", s: "Sentarse" },
+        { t: "In", p: "/ɪn/", s: "En" },
+        { t: "Fish", p: "/fɪsh/", s: "Pez / Pescado" },
+        { t: "Big", p: "/bɪɡ/", s: "Grande" },
+        { t: "Milk", p: "/mɪlk/", s: "Leche" },
+        { t: "Ship", p: "/shɪp/", s: "Barco" },
+        { t: "Miss", p: "/mɪs/", s: "Extrañar / Perder" },
+        { t: "Drink", p: "/drɪnk/", s: "Beber" },
+        { t: "List", p: "/lɪst/", s: "Lista" },
+        { t: "Wind", p: "/wɪnd/", s: "Viento" },
+        { t: "Fill", p: "/fɪl/", s: "Llenar" },
+        { t: "King", p: "/kɪn/", s: "Rey" },
 
         // /æ/ (American: Trap)
         { t: "Cat", p: "/kæt/", s: "Gato" },
@@ -129,6 +128,8 @@
         { t: "Black", p: "/blæk/", s: "Negro" },
         { t: "Stand", p: "/stænd/", s: "Estar de pie" }
     ];
+
+    data = data.sort(() => Math.random() - 0.5);
 
     let idx = 0;
     const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -168,18 +169,22 @@
 
     rec.onend = () => {
         document.getElementById('mic').classList.remove('listening-active');
-        document.getElementById('mic').innerText = "2. Presiona y Habla 🎤";
+        document.getElementById('mic').innerText = "2. Presiona y Habla 3: 🎤";
     };
+
+    function updateCard() {
+        document.getElementById('txt').innerText = data[idx].t;
+        document.getElementById('ipa').innerText = data[idx].p;
+        document.getElementById('translation').innerText = data[idx].s;
+        document.getElementById('translation').classList.add('blur');
+        document.getElementById('counter').innerText = `${idx + 1} / ${data.length}`;
+        document.getElementById('progress-bar').style.width = `${((idx + 1) / data.length) * 100}%`;
+    }
 
     function go() {
         idx++;
         if (idx < data.length) {
-            document.getElementById('txt').innerText = data[idx].t;
-            document.getElementById('ipa').innerText = data[idx].p;
-            document.getElementById('translation').innerText = data[idx].s;
-            document.getElementById('translation').classList.add('blur');
-            document.getElementById('counter').innerText = `${idx + 1} / ${data.length}`;
-            document.getElementById('progress-bar').style.width = `${((idx + 1) / data.length) * 100}%`;
+            updateCard();
             document.getElementById('next').classList.add('hidden');
             document.getElementById('skip').classList.remove('hidden');
             document.getElementById('feedback').innerHTML = "Listo.";
@@ -188,7 +193,7 @@
         }
     }
 
-    document.getElementById('progress-bar').style.width = `${((idx + 1) / data.length) * 100}%`;
+    updateCard();
 </script>
 </body>
 </html>
