@@ -47,7 +47,7 @@
 <div class="action-card">
     <div class="section-header">
         <span>Vowel Sounds Mastery</span>
-        <span id="counter" style="color: #D30000;">1 / 48</span>
+        <span id="counter" style="color: #D30000;">1 / 47</span>
     </div>
     
     <div class="progress-container">
@@ -57,7 +57,7 @@
     <div id="quiz-area">
         <div class="exercise-block" id="block">
             <span class="target-text" id="txt">Ago</span>
-            <span class="ipa-text" id="ipa">/əˈɡoʊ/</span>
+            <span class="ipa-text" id="ipa">/əˈɡou/</span>
             
             <div id="translation" class="translation-text blur" onclick="toggleBlur()">Hace (tiempo)</div>
             
@@ -75,18 +75,18 @@
 <script>
     const data = [
         // /ə/ (The Schwa)
-        { t: "Ago", p: "/əˈɡoʊ/", s: "Hace (tiempo)" },
-        { t: "Soda", p: "/ˈsoʊ.də/", s: "Refresco" },
-        { t: "About", p: "/əˈbaʊt/", s: "Sobre / Acerca de" },
-        { t: "Paper", p: "/ˈpeɪ.pər/", s: "Papel" },
+        { t: "Ago", p: "/əˈɡou/", s: "Hace (tiempo)" },
+        { t: "Soda", p: "/ˈsou.də/", s: "Refresco" },
+        { t: "About", p: "/əˈbaut/", s: "Sobre / Acerca de" },
+        { t: "Paper", p: "/ˈpei.pər/", s: "Papel" },
         { t: "Upon", p: "/əˈpɑːn/", s: "Sobre / Encima de" },
-        { t: "Mother", p: "/ˈmʌð.ər/", s: "Madre" },
+        { t: "Mother", p: "/ˈmʌd.ər/", s: "Madre" },
         { t: "Banana", p: "/bəˈnæn.ə/", s: "Plátano" },
         { t: "Problem", p: "/ˈprɑː.bləm/", s: "Problema" },
         { t: "Elephant", p: "/ˈel.ə.fənt/", s: "Elefante" },
-        { t: "Animal", p: "/ˈæn.ɪ.məl/", s: "Animal" },
+        { t: "Animal", p: "/ˈæn.i.məl/", s: "Animal" },
         { t: "Support", p: "/səˈpɔːrt/", s: "Apoyo / Soportar" },
-        { t: "Listen", p: "/ˈlɪs.ən/", s: "Escuchar" },
+        { t: "Listen", p: "/ˈlis.ən/", s: "Escuchar" },
 
         // /ɜ:/ (American: Nurse)
         { t: "Bird", p: "/bɜːrd/", s: "Pájaro" },
@@ -95,26 +95,25 @@
         { t: "Learn", p: "/lɜːrn/", s: "Aprender" },
         { t: "Word", p: "/wɜːrd/", s: "Palabra" },
         { t: "Person", p: "/ˈpɜːr.sən/", s: "Persona" },
-        { t: "Earth", p: "/ɜːrθ/", s: "Tierra" },
         { t: "First", p: "/fɜːrst/", s: "Primero" },
         { t: "Serve", p: "/sɜːrv/", s: "Servir" },
         { t: "Turn", p: "/tɜːrn/", s: "Girar / Turno" },
-        { t: "Church", p: "/tʃɜːrtʃ/", s: "Iglesia" },
+        { t: "Church", p: "/chɜːrch/", s: "Iglesia" },
         { t: "Early", p: "/ˈɜːr.li/", s: "Temprano" },
 
         // /ɪ/ (American: Kit)
-        { t: "Sit", p: "/sɪt/", s: "Sentarse" },
-        { t: "In", p: "/ɪn/", s: "En" },
-        { t: "Fish", p: "/fɪʃ/", s: "Pez / Pescado" },
-        { t: "Big", p: "/bɪɡ/", s: "Grande" },
-        { t: "Milk", p: "/mɪlk/", s: "Leche" },
-        { t: "Ship", p: "/ʃɪp/", s: "Barco" },
-        { t: "Miss", p: "/mɪs/", s: "Extrañar / Perder" },
-        { t: "Drink", p: "/drɪŋk/", s: "Beber" },
-        { t: "List", p: "/lɪst/", s: "Lista" },
-        { t: "Wind", p: "/wɪnd/", s: "Viento" },
-        { t: "Fill", p: "/fɪl/", s: "Llenar" },
-        { t: "King", p: "/kɪŋ/", s: "Rey" },
+        { t: "Sit", p: "/sit/", s: "Sentarse" },
+        { t: "In", p: "/in/", s: "En" },
+        { t: "Fish", p: "/fish/", s: "Pez / Pescado" },
+        { t: "Big", p: "/biɡ/", s: "Grande" },
+        { t: "Milk", p: "/milk/", s: "Leche" },
+        { t: "Ship", p: "/ship/", s: "Barco" },
+        { t: "Miss", p: "/mis/", s: "Extrañar / Perder" },
+        { t: "Drink", p: "/drink/", s: "Beber" },
+        { t: "List", p: "/list/", s: "Lista" },
+        { t: "Wind", p: "/wind/", s: "Viento" },
+        { t: "Fill", p: "/fil/", s: "Llenar" },
+        { t: "King", p: "/kin/", s: "Rey" },
 
         // /æ/ (American: Trap)
         { t: "Cat", p: "/kæt/", s: "Gato" },
